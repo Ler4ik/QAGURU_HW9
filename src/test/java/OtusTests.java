@@ -3,11 +3,16 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static com.codeborne.selenide.Condition.checked;
-import static com.codeborne.selenide.Condition.text;
+import java.util.List;
+import java.util.stream.Stream;
+
+import static com.codeborne.selenide.CollectionCondition.texts;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
 public class OtusTests {
@@ -38,6 +43,24 @@ public class OtusTests {
         $$("p").findBy(text("Уровень")).parent().sibling(0)
                 .$$("label").findBy(text(level)).preceding(0).$("input[type = checkbox]").click();
         $("#__next").shouldBe(text(courseName));
+    }
+
+    static Stream<Arguments> dataProvider(){
+        return Stream.of(
+                Arguments.of(MenuItem.Обучение, List.of("Все курсы", "События", "OTUS рекомендует")),
+                Arguments.of(MenuItem.Информация, List.of("OTUS", "Студентам", "B2B", "Преподавателям"))
+        );
+    }
+
+    @MethodSource("dataProvider")
+    @ParameterizedTest(name = "При наведении на пункт меню {0} отокрывается попап с разделами: {1}")
+    public void test3(
+            MenuItem item,
+            List<String> columns
+    ){
+        $(".header3__nav span[title = " + item +" ]").hover();
+        $$(".header3__nav-item-popup-wrapper p").filter(visible).shouldHave(texts(columns));
+        sleep(5000);
     }
 }
 
