@@ -60,7 +60,6 @@ public class OtusTests {
     ){
         $(".header3__nav span[title = " + item +" ]").hover();
         $$(".header3__nav-item-popup-wrapper p").filter(visible).shouldHave(texts(columns));
-        sleep(5000);
     }
 }
 
