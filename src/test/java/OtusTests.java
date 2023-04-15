@@ -1,6 +1,7 @@
 import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -25,6 +26,8 @@ public class OtusTests {
     @ValueSource(
             strings = {"Аналитика", "Тестирование"}
     )
+
+    @Tag("simple")
     @ParameterizedTest(name = "При переходе в пункт меню {0} в каталоге выбран фильтр {0}")
     public void test(String title){
         $("#categories_id").$("a[title = " + title +"]").click();
@@ -36,6 +39,7 @@ public class OtusTests {
         Selenide.closeWindow();
     }
 
+    @Tag("simple")
     @CsvFileSource(resources = "/TestData.csv")
     @ParameterizedTest(name = "При выборе уровня {0} в разделе тестирования отображается курс {1}")
     public void test2(String level, String courseName){

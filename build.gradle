@@ -1,5 +1,6 @@
 plugins {
     id 'java-library'
+    id 'io.qameta.allure' version '2.10.0'
 }
 
 repositories {
@@ -10,13 +11,24 @@ compileTestJava {
     options.encoding = 'UTF-8'
 }
 
+def slf4jVersion = "1.7.32"
+
+
 dependencies {
     testImplementation(
             "com.codeborne:selenide:6.12.2",
-            "org.junit.jupiter:junit-jupiter:5.9.2"
+            "org.junit.jupiter:junit-jupiter:5.9.2",
+            "com.github.javafaker:javafaker:0.12",
+            "org.slf4j:slf4j-simple:$slf4jVersion"
     )
 }
 
 test {
-    useJUnitPlatform{}
+    useJUnitPlatform()
+}
+
+task simple_test(type: Test) {
+    useJUnitPlatform {
+        includeTags("simple")
+    }
 }
