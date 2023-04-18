@@ -20,7 +20,7 @@ import static com.codeborne.selenide.Selenide.*;
 public class OtusTests {
 
     @BeforeAll
-    void beforeAll(){
+    static void beforeAll(){
         Configuration.remote = "https://user1:1234@selenoid.autotests.cloud/wd/hub";
     }
 
